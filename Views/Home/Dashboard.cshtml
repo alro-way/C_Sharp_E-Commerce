@@ -1,0 +1,73 @@
+@using C_Sharp_ECommerce.Models;
+@model Product;
+
+<div class="row">
+    <div class="col-sm-3">
+        <form action="customer/search" method="post">
+            <div class="form-group">
+                <label name="Name">Search Product by Name:</label>
+                <input type="text" class="form-control" name="Name">
+                <span class="valid" name="Name"></span>
+            </div>
+            
+            <button type="submit" class="btn btn-info">Search</button>
+            <br>
+        </form>
+        <br>
+        <br>
+    </div>
+        
+    <div class="col-sm-8">
+        <div class="row">
+            <div class="col-sm-3">.col-sm-3</div>
+            <div class="col-sm-3">.col-sm-3</div>
+            <div class="col-sm-3">.col-sm-3</div>
+            <div class="col-sm-3">.col-sm-3</div>
+            <br>
+            <br>
+            @foreach(var prod in ViewBag.LastProducts)
+            {
+                <br>
+                <div class="col-sm-3">
+                    <img width="80%" class="prodImg" src="@prod.Img" alt="Here should be picture of @prod.ProductName">
+                    <a href="/product/@prod.ProductId">
+                        <h6>@prod.ProductName</h6>
+                    </a>
+                    <p>(@prod.Quant left)</p>
+                </div>
+                <br>
+            }
+            <a asp-controller="Home" asp-action="Products">Show more Products...</a>
+            <br>
+            <br>
+        </div>
+
+        <div >
+            <h4>Recent Orders</h4>
+            <p>
+            @foreach(var order in ViewBag.LastOrders)
+            {
+                <p>@order.Buyer.Name purchased @order.OrderQuantity of @order.Purchase.ProductName (@((@DateTime.Now - @order.CreatedAt).ToString("%m")) minutes ago)</p>
+            }
+            </p>
+            <a asp-controller="Home" asp-action="Orders">Show all Orders...</a>
+            <br>
+            <br>
+        </div>
+
+        <div >
+            <h4>New Customers</h4>
+            <p>
+            @foreach(var cust in ViewBag.LastCustomers)
+            {
+                <p>@cust.Name joined the store (@((@DateTime.Now - @cust.CreatedAt).ToString("%m")) minutes ago)</p>
+            }
+            </p>
+            <a asp-controller="Home" asp-action="Customers">Show all Customers...</a>
+            <br>
+            <br>
+        </div>
+
+        
+    </div>
+</div>

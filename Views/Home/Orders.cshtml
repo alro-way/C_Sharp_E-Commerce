@@ -1,0 +1,79 @@
+@using C_Sharp_ECommerce.Models;
+@model Order;
+
+<div class="row">
+    <div class="col-sm-4">
+        <form asp-action="CreateOrder" asp-controller="Home" method="post">
+            <div class="form-group">
+                <label asp-for="CustomerId">Customer:</label>
+                <select asp-for="CustomerId" class="form-control">
+                    @foreach(var customer in ViewBag.AllCustomers) 
+                    {
+                        <option value="@customer.CustomerId">@customer.Name</option>
+                    }
+                </select>
+                <span class="valid" asp-validation-for="CustomerId"></span>
+                <br>
+                <label asp-for="ProductId">Product:</label>
+                <select asp-for="ProductId" class="form-control">
+                    @foreach(var product in ViewBag.AllProducts) 
+                    {
+                        <option value="@product.ProductId"> @product.ProductName (@product.Quant left)</option>
+                    }
+                </select>
+                <span class="valid" asp-validation-for="ProductId"></span>
+                <br>
+                <label asp-for="OrderQuantity">Quantity:</label>
+                <input type="number" min="1" class="form-control" asp-for="OrderQuantity">
+                <span class="valid" asp-validation-for="OrderQuantity"></span>
+                <br>
+
+            </div>
+            <button type="submit" class="btn btn-info">Add Order</button>
+            <br>
+        </form>
+        <br>
+        <br>
+        <form action="/order/search" method="post">
+            <div class="form-group">
+                <label name="Name">Search Order by Name:</label>
+                <input type="text" class="form-control" name="Name">
+                <span class="valid" name="Name"></span>
+            </div>
+            
+            <button type="submit" class="btn btn-info">Search</button>
+            <br>
+        </form>
+        <br>
+        <br>
+    </div>
+    <div class="col-sm-8">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="myTable" style="overflow-y:auto;">
+                @foreach(var order in @ViewBag.AllOrders)
+                {
+                    <tr>
+                        <th>@order.Buyer.Name</th>
+                        <th>@order.Purchase.ProductName</th>
+                        <th>@order.OrderQuantity</th>
+                        <th>@order.CreatedAt</th>
+                        <th>
+                            <a asp-action="DeleteOrder" asp-controller="Home" asp-route-OrderId="@order.OrderId">Remove Order</a>
+                        </th>
+                    </tr>
+                }
+                    
+                    
+            </tbody>
+        </table>
+    </div>
+</div>
